@@ -1,12 +1,12 @@
 import { Component, input } from '@angular/core';
 import type { Country } from '../../interfaces/country.interface';
 import { CommonModule, DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'country-table',
-  imports: [ DecimalPipe ],
+  imports: [ RouterLink, DecimalPipe ],
   templateUrl: './table.component.html',
-  styles: ``
 })
 export class TableComponent {
  countries = input.required<Country[]>();

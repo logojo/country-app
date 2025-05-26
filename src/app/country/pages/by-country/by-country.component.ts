@@ -1,7 +1,10 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { Component, inject,  signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
+
 import { InputSearchComponent } from "../../components/input-search/input-search.component";
 import { TableComponent } from "../../components/table/table.component";
-import { firstValueFrom } from 'rxjs';
+
 import { CountryService } from '../../services/country.service';
 
 @Component({
@@ -14,14 +17,14 @@ export default class ByCountryComponent {
   private countryService = inject( CountryService );
  query = signal<string>('');
 
-  //* resource solo esta disponible a partir de Angular 19
-  countriesResource = resource({
-    request: () => ({query: this.query()}),
-    loader: async({ request }) => {
-    
-      if( !this.query() ) return [];
 
-      return await firstValueFrom( this.countryService.searchByCapital(request.query) )
+  countriesResource = rxResource({
+    request: () => ({query: this.query()}),
+    loader: ({ request }) => {
+    
+      if( !this.query() ) return of([]);
+
+      return  this.countryService.searchByCapital(request.query);
     },
   });
 }

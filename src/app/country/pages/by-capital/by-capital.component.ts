@@ -1,5 +1,6 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { firstValueFrom, of } from 'rxjs';
 
 import { CountryService } from '../../services/country.service';
 import { InputSearchComponent } from "../../components/input-search/input-search.component";
@@ -19,16 +20,28 @@ export default class ByCapitalComponent {
   private countryService = inject( CountryService );
   query = signal<string>('');
 
-  //* resource solo esta disponible a partir de Angular 19
-  countriesResource = resource({
+    //* resource trabaja con observables
+  countriesResource = rxResource({
     request: () => ({query: this.query()}),
-    loader: async({ request }) => {
+    loader: ({ request }) => {
     
-      if( !this.query() ) return [];
+      if( !this.query() ) return of([]);
 
-      return await firstValueFrom( this.countryService.searchByCapital(request.query) )
+      return   this.countryService.searchByCapital( request.query );
     },
   });
+
+  //* resource solo esta disponible a partir de Angular 19
+  //* resource trabaja con promesas
+  // countriesResource = resource({
+  //   request: () => ({query: this.query()}),
+  //   loader: async({ request }) => {
+    
+  //     if( !this.query() ) return [];
+
+  //     return await firstValueFrom( this.countryService.searchByCapital(request.query) )
+  //   },
+  // });
 
   // isLoading = signal(false);
   // hasError = signal<string|null>(null);
