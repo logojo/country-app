@@ -32,6 +32,29 @@
                     </td>
                 </tr>
               }
+              @if( errorMessage() ) {
+                <tr>
+                    <td colspan="8" class="">
+                        {{ errorMessage() }}
+                    </td>
+                </tr>
+              }
+
+              @if( countries().length === 0 && !isLoading()  && !errorMessage() ){
+                <tr>
+                     <td colspan="8" class="">                            
+                        No se encontraron países
+                    </td>
+                </tr>
+              }
+
+              @if( isLoading() ){
+                <tr>
+                    <td colspan="8" class="text-center">
+                         <span class="loading loading-bars loading-xl"></span>
+                    </td>
+                </tr>
+              }
             </tbody>
         </table>
     </div>

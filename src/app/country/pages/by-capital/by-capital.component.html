@@ -2,14 +2,10 @@
 <country-input-search (value)="query.set($event)" placeholder="Buscar por capital"/>
 
 <section class="mt-5">
-    @if( countriesResource.error() ) {
-        <div class="alert alert-error shadow-lg">
-            <div>
-                <span>{{ countriesResource.error() }}</span>
-            </div>
-        </div>
-    }
-    @if( countriesResource.hasValue() ) {
-        <country-table [countries]="countriesResource.value()!" />
-    }
+    <country-table 
+      [countries]="countriesResource.value() ?? []" 
+      [errorMessage]="countriesResource.error()"
+      [isEmpty]="countriesResource.value()?.length === 0"
+      [isLoading]="countriesResource.isLoading()"
+    />
 </section>

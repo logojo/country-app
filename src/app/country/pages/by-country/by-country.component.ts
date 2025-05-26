@@ -20,11 +20,9 @@ export default class ByCountryComponent {
 
   countriesResource = rxResource({
     request: () => ({query: this.query()}),
-    loader: ({ request }) => {
-    
+    loader: ({ request }) => {    
       if( !this.query() ) return of([]);
-
-      return  this.countryService.searchByCapital(request.query);
+      return  this.countryService.searchByCountry(request.query);
     },
   });
 }

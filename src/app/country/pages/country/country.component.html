@@ -1,1 +1,14 @@
-<p>country works!</p>
+@if( countryResource.error() ) {
+    <app-not-found />
+}
+
+@if (countryResource.isLoading()) {
+    <div class="flex justify-center ">
+        <span class="loading loading-bars loading-xl"></span>
+    </div>
+}
+
+@if ( countryResource.hasValue()) { 
+      <country-information [country]="countryResource.value()" />
+}
+
