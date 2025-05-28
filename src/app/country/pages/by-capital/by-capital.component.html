@@ -1,5 +1,9 @@
 
-<country-input-search (value)="query.set($event)" placeholder="Buscar por capital"/>
+<country-input-search 
+  (value)="query.set($event)" 
+  placeholder="Buscar por capital"
+  [debounceTime]="300"
+/>
 
 <section class="mt-5">
     <country-table 

@@ -6,3 +6,11 @@ export interface Country {
     capital    : string;
     population : number;
 }
+
+export type Region =
+  | 'Africa'
+  | 'Americas'
+  | 'Asia'
+  | 'Europe'
+  | 'Oceania'
+  | 'Antarctic';

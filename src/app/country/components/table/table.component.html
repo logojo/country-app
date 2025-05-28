@@ -34,7 +34,7 @@
               }
               @if( errorMessage() ) {
                 <tr>
-                    <td colspan="8" class="">
+                    <td colspan="8" class="text-center link-primary">
                         {{ errorMessage() }}
                     </td>
                 </tr>
@@ -42,7 +42,7 @@
 
               @if( countries().length === 0 && !isLoading()  && !errorMessage() ){
                 <tr>
-                     <td colspan="8" class="">                            
+                     <td colspan="8" class="text-center link-primary">                            
                         No se encontraron países
                     </td>
                 </tr>

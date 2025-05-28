@@ -1,3 +1,8 @@
 <section class="mt-5">
+    <div class="mb-3 flex gap-2">
+        @for (region of regions; track region) {
+        <button class="btn btn-soft btn-info">{{ region }}</button>
+        }
+    </div>
     <country-table [countries]="[]" />
 </section>
