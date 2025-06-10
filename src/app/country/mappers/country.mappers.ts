@@ -9,7 +9,7 @@ export class CountryMappers {
       flag: country.flag,
       bandera: country.flags.svg,
       name: country.translations['spa'].common,
-      capital: country.capital.join(', '),
+      capital: country.capital?.join(', '),
       population: country.population,
     }
   }

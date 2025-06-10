@@ -1,5 +1,7 @@
 
-<country-input-search (value)="query.set($event)" placeholder="Buscar por país"/>
+<country-input-search (value)="query.set($event)" 
+                      placeholder="Buscar por país"
+                      [initialValue]="query()"/>
 
 <section class="mt-5">
 

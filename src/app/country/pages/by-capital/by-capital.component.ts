@@ -1,5 +1,6 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { Component, inject, linkedSignal, resource, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 
 import { CountryService } from '../../services/country.service';
@@ -18,14 +19,24 @@ import type { Country } from '../../interfaces/country.interface';
 })
 export default class ByCapitalComponent {
   private countryService = inject( CountryService );
-  query = signal<string>('');
+  private activetedRoute = inject ( ActivatedRoute );
+  private router = inject ( Router );
 
-    //* resource trabaja con observables
+  queryParam = this.activetedRoute.snapshot.queryParamMap.get('query') ?? '';
+  query = linkedSignal(() => this.queryParam);
+  
+
+    //* rxResource trabaja con observables
   countriesResource = rxResource({
     request: () => ({query: this.query()}),
     loader: ({ request }) => {
-    
       if( !this.query() ) return of([]);
+
+      this.router.navigate(['/country/by-capital'], {
+        queryParams: {
+          query: request.query
+        }
+      }); //modificarndo la url basado en lo buscado en el input 
 
       return   this.countryService.searchByCapital( request.query );
     },

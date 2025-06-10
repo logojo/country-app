@@ -1,8 +1,18 @@
 <section class="mt-5">
     <div class="mb-3 flex gap-2">
-        @for (region of regions; track region) {
-        <button class="btn btn-soft btn-info">{{ region }}</button>
+        @for (item of regions; track item) {
+        <button (click)="region.set( item )" 
+                [ngClass]="[region() === item ? 'btn-accent' : 'btn-info']" 
+                class="btn btn-soft w-[100px]"
+        > 
+          {{ item }}
+        </button>
         }
     </div>
-    <country-table [countries]="[]" />
+    <country-table 
+      [countries]="countriesResponse.value() ?? []"
+      [errorMessage]="countriesResponse.error()"
+      [isEmpty]="countriesResponse.value()?.length === 0"
+      [isLoading]="countriesResponse.isLoading()" 
+    />
 </section>

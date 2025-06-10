@@ -17,6 +17,7 @@ export class CountryService {
 
   private queryCacheCapital = new Map<string, Country[]>();
   private queryCachePais = new Map<string, Country[]>();
+  private queryCacheRegion = new Map<string, Country[]>();
 
   searchByCapital( query: string ) : Observable<Country[]> {
     query = query.toLowerCase();
@@ -59,7 +60,7 @@ export class CountryService {
                );
   }
 
-   searchByAlphaCode( code: string ) {
+  searchByAlphaCode( code: string ) {
 
     return this.http.get<CountryResponse[]>(`${this.baseUrl}/alpha/${code}`)
                .pipe(  
@@ -68,6 +69,26 @@ export class CountryService {
                 map( countries => countries.at(0)), //*regresando el primer elemento del array
                 catchError((err) => {
                   return throwError(() => new Error(`No se pudieron encontrar resultados con: ${ code } `));
+                  
+                }
+              )
+               );
+  }
+
+  searchByRegion( region: string ) : Observable<Country[]> {
+
+     if( this.queryCacheRegion.has(region) ) {
+        return of( this.queryCacheRegion.get(region) ?? [] );
+    }
+
+    return this.http.get<CountryResponse[]>(`${this.baseUrl}/region/${region}`)
+               .pipe(
+               //delay(2000),
+                map((res) =>  CountryMappers.restCountriesToCountries(res)),
+                tap(( countries => this.queryCacheRegion.set(region, countries) )),
+                catchError((err) => {
+                  console.log(err);
+                  return throwError(() => new Error(`No se pudieron encontrar resultados con: ${ region } `));
                   
                 }
               )
